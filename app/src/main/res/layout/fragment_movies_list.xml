@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--<FrameLayout android:layout_height="match_parent"-->
+    <!--android:layout_width="match_parent"-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android">-->
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/list"
+        android:name="leonardo.popularmovies.MoviesFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context="leonardo.popularmovies.MoviesFragment"
+        tools:listitem="@layout/fragment_movies" />
+    <!--<ProgressBar-->
+    <!--android:id="@+id/pb_loading_indicator"-->
+    <!--android:layout_width="42dp"-->
+    <!--android:layout_height="42dp" -->
+    <!--android:layout_gravity="center"/>-->
+<!--</FrameLayout>-->
+
