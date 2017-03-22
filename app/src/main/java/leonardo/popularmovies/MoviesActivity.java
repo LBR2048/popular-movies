@@ -3,7 +3,6 @@ package leonardo.popularmovies;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.widget.Toast;
 
 public class MoviesActivity extends MyAppCompatActivity implements
         MoviesFragment.OnMoviesFragmentInteractionListener,
@@ -11,8 +10,6 @@ public class MoviesActivity extends MyAppCompatActivity implements
 
     public static final String MOVIES_FRAGMENT_TAG = "MoviesFragmentTag";
     public static final String MOVIE_DETAILS_FRAGMENT_TAG = "MovieDetailsFragmentTag";
-
-    private MoviesFragment mMoviesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +19,6 @@ public class MoviesActivity extends MyAppCompatActivity implements
         if (savedInstanceState == null) {
             showMoviesFragment();
         }
-
     }
 
     private void showMoviesFragment() {
@@ -52,8 +48,6 @@ public class MoviesActivity extends MyAppCompatActivity implements
 
     @Override
     public void onMovieClicked(Movie movie) {
-        Toast.makeText(getApplicationContext(), movie.getTitle(), Toast.LENGTH_SHORT).show();
-
         showMovieDetailsFragment(movie);
     }
 
