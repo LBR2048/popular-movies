@@ -91,6 +91,9 @@ public class MoviesFragment extends Fragment {
             // Set adapter
             mMoviesAdapter = new MoviesRecyclerViewAdapter(new ArrayList<Movie>(), mListener);
             recyclerView.setAdapter(mMoviesAdapter);
+
+            // Load movies data
+            loadTopMovies();
         }
         return view;
     }

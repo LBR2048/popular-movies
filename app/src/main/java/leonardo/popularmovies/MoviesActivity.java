@@ -52,14 +52,6 @@ public class MoviesActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        mMoviesFragment = (MoviesFragment) getSupportFragmentManager().findFragmentByTag(MOVIES_FRAGMENT_TAG);
-        mMoviesFragment.loadTopMovies();
-    }
-
-    @Override
     public void onMovieClicked(Movie movie) {
         Toast.makeText(getApplicationContext(), movie.getTitle(), Toast.LENGTH_SHORT).show();
 
