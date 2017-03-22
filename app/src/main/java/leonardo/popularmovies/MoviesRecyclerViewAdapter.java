@@ -44,6 +44,8 @@ public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecycl
         String posterPath = mMovies.get(position).getPoster();
         Picasso.with(context)
                 .load(posterPath)
+                .resize(500, 1000)
+                .centerInside()
                 .placeholder(context.getResources().getDrawable(R.drawable.ic_movie_cyan_600_24dp))
                 .into(holder.mPosterView);
 

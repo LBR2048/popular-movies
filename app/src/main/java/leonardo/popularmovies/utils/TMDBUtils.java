@@ -37,7 +37,7 @@ public final class TMDBUtils {
     private static final String OVERVIEW = "overview";
     private static final String VOTE_AVERAGE = "vote_average";
     private static final String RELEASE_DATE = "release_date";
-    private static final String BASE_POSTER_PATH = "http://image.tmdb.org/t/p/w185";
+    private static final String BASE_POSTER_PATH = "http://image.tmdb.org/t/p/w500";
 
     /**
      * This method parses JSON from a web response and returns an array of Strings
