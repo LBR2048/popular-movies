@@ -3,10 +3,9 @@ package leonardo.popularmovies;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-public class MoviesActivity extends AppCompatActivity implements
+public class MoviesActivity extends MyAppCompatActivity implements
         MoviesFragment.OnMoviesFragmentInteractionListener,
         MovieDetailsFragment.OnFragmentInteractionListener{
 
