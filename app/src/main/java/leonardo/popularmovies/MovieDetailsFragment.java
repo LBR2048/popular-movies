@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,13 +72,13 @@ public class MovieDetailsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TextView titleView = (TextView) getActivity().findViewById(R.id.tv_movie_details_title);
         ImageView posterView = (ImageView) getActivity().findViewById(R.id.iv_movie_details_poster);
         TextView overviewView = (TextView) getActivity().findViewById(R.id.tv_movie_details_overview);
         TextView ratingView = (TextView) getActivity().findViewById(R.id.tv_movie_details_rating);
         TextView releaseDateView = (TextView) getActivity().findViewById(R.id.tv_movie_details_release_date);
 
-        titleView.setText(movie.getTitle());
+        // Set activity title
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(movie.getTitle());
 
         String posterPath = movie.getPoster();
         Picasso.with(getContext())

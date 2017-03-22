@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -77,6 +78,9 @@ public class MoviesFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
+
+            // Set activity title
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.app_name);
 
             // Set vertical separator lines
             RecyclerView.ItemDecoration itemDecorationVertical = new
