@@ -1,6 +1,7 @@
 package leonardo.popularmovies;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,7 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+
+import leonardo.popularmovies.utils.NetworkUtils;
+import leonardo.popularmovies.utils.TMDBUtils;
 
 /**
  * A fragment representing a list of Items.
@@ -121,6 +127,48 @@ public class MoviesFragment extends Fragment {
         void onMovieClicked(Movie item);
     }
 
+    public void loadTopMovies() {
+        new FetchTopMoviesTask().execute();
+    }
 
+    private class FetchTopMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            mLoadingIndicator.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected List<Movie> doInBackground(Void... voids) {
+            URL weatherRequestUrl = NetworkUtils.buildTopMoviesUrl();
+
+            try {
+                String jsonMoviesResponse = NetworkUtils
+                        .getResponseFromHttpUrl(weatherRequestUrl);
+
+                List<Movie> movies = TMDBUtils
+                        .getMoviesFromJsonString(getActivity().getApplicationContext(), jsonMoviesResponse);
+
+                return movies;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<Movie> movies) {
+//            mLoadingIndicator.setVisibility(View.INVISIBLE);
+            if (movies != null) {
+                mMoviesAdapter.setMoviesData(movies);
+//                showWeatherDataView();
+//                mForecastAdapter.setWeatherData(weatherData);
+            } else {
+//                showErrorMessage();
+            }
+        }
+    }
 
 }

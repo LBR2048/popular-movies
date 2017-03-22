@@ -1,17 +1,10 @@
 package leonardo.popularmovies;
 
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
-
-import java.net.URL;
-import java.util.List;
-
-import leonardo.popularmovies.utils.NetworkUtils;
-import leonardo.popularmovies.utils.TMDBUtils;
 
 public class MoviesActivity extends AppCompatActivity implements
         MoviesFragment.OnMoviesFragmentInteractionListener,
@@ -31,8 +24,6 @@ public class MoviesActivity extends AppCompatActivity implements
             showMoviesFragment();
         }
 
-        mMoviesFragment = (MoviesFragment) getSupportFragmentManager().findFragmentByTag(MOVIES_FRAGMENT_TAG);
-        loadTopMovies();
     }
 
     private void showMoviesFragment() {
@@ -64,7 +55,8 @@ public class MoviesActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
 
-
+        mMoviesFragment = (MoviesFragment) getSupportFragmentManager().findFragmentByTag(MOVIES_FRAGMENT_TAG);
+        mMoviesFragment.loadTopMovies();
     }
 
     @Override
@@ -79,47 +71,5 @@ public class MoviesActivity extends AppCompatActivity implements
 
     }
 
-    public void loadTopMovies() {
-        new FetchTopMoviesTask().execute();
-    }
 
-    private class FetchTopMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected List<Movie> doInBackground(Void... voids) {
-            URL weatherRequestUrl = NetworkUtils.buildTopMoviesUrl();
-
-            try {
-                String jsonMoviesResponse = NetworkUtils
-                        .getResponseFromHttpUrl(weatherRequestUrl);
-
-                List<Movie> movies = TMDBUtils
-                        .getMoviesFromJsonString(getApplicationContext(), jsonMoviesResponse);
-
-                return movies;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<Movie> movies) {
-//            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (movies != null) {
-                mMoviesFragment.mMoviesAdapter.setMoviesData(movies);
-//                showWeatherDataView();
-//                mForecastAdapter.setWeatherData(weatherData);
-            } else {
-//                showErrorMessage();
-            }
-        }
-    }
 }
