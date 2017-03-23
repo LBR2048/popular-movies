@@ -15,13 +15,16 @@
  */
 package leonardo.popularmovies.utils;
 
-import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +34,14 @@ import leonardo.popularmovies.Movie;
  * Utility functions to handle OpenWeatherMap JSON data.
  */
 public final class TMDBUtils {
+
+    private static final String TAG = TMDBUtils.class.getSimpleName();
+
+    private static final String TMDB_BASE_URL = "http://api.themoviedb.org/3/movie/";
+    private static final String API_KEY = "3b5f23d99fe6fff8043afc7f5345da9f";
+    private static final String PATH_POPULAR = "popular";
+    private static final String PATH_TOP_RATED = "top_rated";
+    private static final String QUERY_PARAMETER_API_KEY = "api_key";
 
     private static final String ORIGINAL_TITLE = "original_title";
     private static final String POSTER_PATH = "poster_path";
@@ -105,16 +116,39 @@ public final class TMDBUtils {
         return movies;
     }
 
-    /**
-     * Parse the JSON and convert it into ContentValues that can be inserted into our database.
-     *
-     * @param context         An application context, such as a service or activity context.
-     * @param forecastJsonStr The JSON to parse into ContentValues.
-     *
-     * @return An array of ContentValues parsed from the JSON.
-     */
-    public static ContentValues[] getFullWeatherDataFromJson(Context context, String forecastJsonStr) {
-        /** This will be implemented in a future lesson **/
-        return null;
+    public static URL buildTopRatedMoviesUrl() {
+        Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
+                .appendPath(PATH_TOP_RATED)
+                .appendQueryParameter(QUERY_PARAMETER_API_KEY, API_KEY)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.v(TAG, "Built URI " + url);
+
+        return url;
+    }
+
+    public static URL buildMostPopularMoviesUrl() {
+        Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
+                .appendPath(PATH_POPULAR)
+                .appendQueryParameter("api_key", API_KEY)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.v(TAG, "Built URI " + url);
+
+        return url;
     }
 }

@@ -158,9 +158,9 @@ public class MoviesFragment extends Fragment {
         protected List<Movie> doInBackground(Void... voids) {
             URL moviesRequestUrl;
             if (mMoviesSelection == MOVIES_TOP_RATED) {
-                moviesRequestUrl = NetworkUtils.buildTopRatedMoviesUrl();
+                moviesRequestUrl = TMDBUtils.buildTopRatedMoviesUrl();
             } else {
-                moviesRequestUrl = NetworkUtils.buildMostPopularMoviesUrl();
+                moviesRequestUrl = TMDBUtils.buildMostPopularMoviesUrl();
             }
 
             try {
