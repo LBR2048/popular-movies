@@ -29,10 +29,15 @@ import leonardo.popularmovies.utils.TMDBUtils;
  */
 public class MoviesFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
+    public static final int MOVIES_TOP_RATED = 0;
+    public static final int MOVIES_MOST_POPULAR = 1;
+
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 2;
+    private static final String ARG_MOVIES_SELECTION = "movies-selection";
+
+    private int mColumnCount;
+    private int mMoviesSelection;
+
     private OnMoviesFragmentInteractionListener mListener;
     public MoviesRecyclerViewAdapter mMoviesAdapter;
     private ProgressBar mLoadingIndicator;
@@ -46,10 +51,11 @@ public class MoviesFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static MoviesFragment newInstance(int columnCount) {
+    public static MoviesFragment newInstance(int columnCount, int moviesSelection) {
         MoviesFragment fragment = new MoviesFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putInt(ARG_MOVIES_SELECTION, moviesSelection);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,6 +66,7 @@ public class MoviesFragment extends Fragment {
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            mMoviesSelection = getArguments().getInt(ARG_MOVIES_SELECTION);
         }
     }
 
@@ -97,7 +104,8 @@ public class MoviesFragment extends Fragment {
             recyclerView.setAdapter(mMoviesAdapter);
 
             // Load movies data
-            loadTopMovies();
+            loadMovies();
+
         }
         return view;
     }
@@ -134,11 +142,11 @@ public class MoviesFragment extends Fragment {
         void onMovieClicked(Movie item);
     }
 
-    public void loadTopMovies() {
-        new FetchTopMoviesTask().execute();
+    public void loadMovies() {
+        new FetchMoviesTask().execute();
     }
 
-    private class FetchTopMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
+    private class FetchMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
 
         @Override
         protected void onPreExecute() {
@@ -148,11 +156,16 @@ public class MoviesFragment extends Fragment {
 
         @Override
         protected List<Movie> doInBackground(Void... voids) {
-            URL weatherRequestUrl = NetworkUtils.buildTopMoviesUrl();
+            URL moviesRequestUrl;
+            if (mMoviesSelection == MOVIES_TOP_RATED) {
+                moviesRequestUrl = NetworkUtils.buildTopRatedMoviesUrl();
+            } else {
+                moviesRequestUrl = NetworkUtils.buildMostPopularMoviesUrl();
+            }
 
             try {
                 String jsonMoviesResponse = NetworkUtils
-                        .getResponseFromHttpUrl(weatherRequestUrl);
+                        .getResponseFromHttpUrl(moviesRequestUrl);
 
                 List<Movie> movies = TMDBUtils
                         .getMoviesFromJsonString(getActivity().getApplicationContext(), jsonMoviesResponse);

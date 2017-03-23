@@ -44,7 +44,7 @@ public final class NetworkUtils {
      *
      * @return The URL to use to query the weather server.
      */
-    public static URL buildTopMoviesUrl() {
+    public static URL buildTopRatedMoviesUrl() {
         Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
                 .appendPath(PATH_TOP_RATED)
                 .appendQueryParameter(QUERY_PARAMETER_API_KEY, API_KEY)
@@ -62,7 +62,7 @@ public final class NetworkUtils {
         return url;
     }
 
-    public static URL buildPopularMoviesUrl() {
+    public static URL buildMostPopularMoviesUrl() {
         Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
                 .appendPath(PATH_POPULAR)
                 .appendQueryParameter("api_key", API_KEY)
