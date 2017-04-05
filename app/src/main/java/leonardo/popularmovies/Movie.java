@@ -8,11 +8,11 @@ import java.util.List;
  * A dummy item representing a piece of overview.
  */
 public class Movie implements Serializable {
-    private final String title;
-    private final String poster;
-    private final String overview;
-    private final String rating;
-    private final String releaseDate;
+    private String title;
+    private String poster;
+    private String overview;
+    private String rating;
+    private String releaseDate;
 
     public Movie(String title, String poster, String overview, String rating, String releaseDate) {
         this.title = title;
