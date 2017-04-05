@@ -157,10 +157,10 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.On
 
     @Override
     public void onMovieClicked(Movie movie) {
-        showMoviesActivity(movie);
+        showMovieDetailsActivity(movie);
     }
 
-    private void showMoviesActivity(Movie movie) {
+    private void showMovieDetailsActivity(Movie movie) {
         // Open movies Activity
         Intent intent = new Intent(this, MovieDetailsActivity.class);
         intent.putExtra("movie", Parcels.wrap(movie));
