@@ -39,7 +39,7 @@ public class MoviesFragment extends Fragment {
     private int mMoviesSelection;
 
     private OnMoviesFragmentInteractionListener mListener;
-    public MoviesRecyclerViewAdapter mMoviesAdapter;
+    public MoviesAdapter mMoviesAdapter;
     private ProgressBar mLoadingIndicator;
 
     /**
@@ -100,7 +100,7 @@ public class MoviesFragment extends Fragment {
             recyclerView.addItemDecoration(itemDecorationHorizontal);
 
             // Set adapter
-            mMoviesAdapter = new MoviesRecyclerViewAdapter(new ArrayList<Movie>(), mListener);
+            mMoviesAdapter = new MoviesAdapter(new ArrayList<Movie>(), mListener);
             recyclerView.setAdapter(mMoviesAdapter);
 
             // Load movies data

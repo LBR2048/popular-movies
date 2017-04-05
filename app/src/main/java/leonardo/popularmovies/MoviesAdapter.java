@@ -19,12 +19,12 @@ import leonardo.popularmovies.MoviesFragment.OnMoviesFragmentInteractionListener
  * specified {@link OnMoviesFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MoviesRecyclerViewAdapter extends RecyclerView.Adapter<MoviesRecyclerViewAdapter.ViewHolder> {
+public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
 
     private List<Movie> mMovies;
     private final OnMoviesFragmentInteractionListener mListener;
 
-    public MoviesRecyclerViewAdapter(List<Movie> movies, OnMoviesFragmentInteractionListener listener) {
+    public MoviesAdapter(List<Movie> movies, OnMoviesFragmentInteractionListener listener) {
         mMovies = movies;
         mListener = listener;
     }
