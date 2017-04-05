@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import org.parceler.Parcels;
+
 public class MovieDetailsActivity extends AppCompatActivity implements
         MovieDetailsFragment.OnFragmentInteractionListener{
 
@@ -15,7 +17,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_movies);
 
         if (savedInstanceState == null) {
-            Movie movie = (Movie) getIntent().getSerializableExtra("movie");
+            Movie movie = Parcels.unwrap(getIntent().getParcelableExtra("movie"));
             showMovieDetailsFragment(movie);
         }
     }

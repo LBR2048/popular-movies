@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.parceler.Parcels;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,7 +50,7 @@ public class MovieDetailsFragment extends Fragment {
     public static MovieDetailsFragment newInstance(Movie movie) {
         MovieDetailsFragment fragment = new MovieDetailsFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, movie);
+        args.putParcelable(ARG_PARAM1, Parcels.wrap(movie));
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,7 +59,7 @@ public class MovieDetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            movie = (Movie) getArguments().getSerializable(ARG_PARAM1);
+            movie = Parcels.unwrap(getArguments().getParcelable(ARG_PARAM1));
         }
     }
 

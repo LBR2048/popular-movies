@@ -1,18 +1,24 @@
 package leonardo.popularmovies;
 
-import java.io.Serializable;
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A dummy item representing a piece of overview.
  */
-public class Movie implements Serializable {
-    private String title;
-    private String poster;
-    private String overview;
-    private String rating;
-    private String releaseDate;
+@Parcel
+public class Movie {
+    String title;
+    String poster;
+    String overview;
+    String rating;
+    String releaseDate;
+
+    public Movie() {
+        // Required for Parcelable
+    }
 
     public Movie(String title, String poster, String overview, String rating, String releaseDate) {
         this.title = title;

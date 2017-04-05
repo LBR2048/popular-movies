@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.parceler.Parcels;
+
 public class MainActivity extends AppCompatActivity implements MoviesFragment.OnMoviesFragmentInteractionListener {
 
     /**
@@ -161,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.On
     private void showMoviesActivity(Movie movie) {
         // Open movies Activity
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("movie", movie);
+        intent.putExtra("movie", Parcels.wrap(movie));
         startActivity(intent);
     }
 }
