@@ -28,18 +28,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 .commit();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        if (fragmentManager.getBackStackEntryCount() > 0) {
-//            fragmentManager.popBackStack();
-//        }
-//    }
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
-
 
 }
