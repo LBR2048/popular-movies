@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.On
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public static final int TAB_COUNT = 2;
+        public static final int COLUMN_COUNT = 2;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -130,9 +131,9 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.On
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    return MoviesFragment.newInstance(TAB_COUNT, MoviesFragment.MOVIES_TOP_RATED);
+                    return MoviesFragment.newInstance(COLUMN_COUNT, MoviesFragment.MOVIES_TOP_RATED);
                 case 1:
-                    return MoviesFragment.newInstance(TAB_COUNT, MoviesFragment.MOVIES_MOST_POPULAR);
+                    return MoviesFragment.newInstance(COLUMN_COUNT, MoviesFragment.MOVIES_MOST_POPULAR);
             }
             return PlaceholderFragment.newInstance(position + 1);
         }
