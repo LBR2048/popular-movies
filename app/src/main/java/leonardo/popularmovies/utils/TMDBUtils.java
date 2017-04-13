@@ -28,6 +28,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import leonardo.popularmovies.BuildConfig;
 import leonardo.popularmovies.Movie;
 
 /**
@@ -38,7 +39,7 @@ public final class TMDBUtils {
     private static final String TAG = TMDBUtils.class.getSimpleName();
 
     private static final String TMDB_BASE_URL = "http://api.themoviedb.org/3/movie/";
-    private static final String API_KEY = "3b5f23d99fe6fff8043afc7f5345da9f";
+    private static final String API_KEY = BuildConfig.THE_MOVIE_DB_API_TOKEN;
     private static final String PATH_POPULAR = "popular";
     private static final String PATH_TOP_RATED = "top_rated";
     private static final String QUERY_PARAMETER_API_KEY = "api_key";
