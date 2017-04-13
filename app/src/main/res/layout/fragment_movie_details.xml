@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_height="match_parent"
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,10 +24,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="Overview" />
+            android:paddingTop="8dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            tools:text="Overview" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,10 +47,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="Rating" />
+                android:paddingTop="8dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                tools:text="Rating" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -65,10 +66,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="Release date" />
+                android:paddingTop="8dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                tools:text="Release date" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
