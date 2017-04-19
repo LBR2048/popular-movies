@@ -10,6 +10,7 @@ import java.util.List;
  */
 @Parcel
 public class Movie {
+    int id;
     String title;
     String poster;
     String overview;
@@ -21,7 +22,7 @@ public class Movie {
         // Required for Parcelable
     }
 
-    public Movie(String title, String poster, String overview, String rating, String releaseDate) {
+    public Movie(int id, String title, String poster, String overview, String rating, String releaseDate) {
         this.title = title;
         this.poster = poster;
         this.overview = overview;
@@ -64,8 +65,8 @@ public class Movie {
 
     public static List<Movie> getDummyMovies() {
         List<Movie> movies = new ArrayList<>();
-        movies.add(new Movie("title 1", "poster 1", "overview 1", "rating 1", "date 1"));
-        movies.add(new Movie("title 2", "poster 2", "overview 2", "rating 2", "date 2"));
+        movies.add(new Movie(0, "title 1", "poster 1", "overview 1", "rating 1", "date 1"));
+        movies.add(new Movie(1, "title 2", "poster 2", "overview 2", "rating 2", "date 2"));
 
         return movies;
     }

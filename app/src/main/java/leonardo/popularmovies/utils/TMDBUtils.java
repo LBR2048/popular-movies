@@ -42,8 +42,12 @@ public final class TMDBUtils {
     private static final String API_KEY = BuildConfig.THE_MOVIE_DB_API_TOKEN;
     private static final String PATH_POPULAR = "popular";
     private static final String PATH_TOP_RATED = "top_rated";
+    private static final String PATH_TRAILERS = "videos";
+    private static final String PATH_REVIEWS = "eviews";
+
     private static final String QUERY_PARAMETER_API_KEY = "api_key";
 
+    private static final String ID = "id";
     private static final String ORIGINAL_TITLE = "original_title";
     private static final String POSTER_PATH = "poster_path";
     private static final String OVERVIEW = "overview";
@@ -95,6 +99,7 @@ public final class TMDBUtils {
         for (int i = 0; i < moviesArray.length(); i++) {
 
             /* These are the values that will be collected */
+            final int id;
             final String title;
             final String poster;
             final String overview;
@@ -104,13 +109,14 @@ public final class TMDBUtils {
             /* Get the JSON object representing the movie */
             JSONObject movieData = moviesArray.getJSONObject(i);
 
+            id = movieData.getInt(ID);
             title = movieData.getString(ORIGINAL_TITLE);
             poster = BASE_POSTER_PATH + movieData.getString(POSTER_PATH);
             overview = movieData.getString(OVERVIEW);
             rating = movieData.getString(VOTE_AVERAGE);
             releaseDate = movieData.getString(RELEASE_DATE);
 
-            Movie movie = new Movie(title, poster, overview, rating, releaseDate);
+            Movie movie = new Movie(id, title, poster, overview, rating, releaseDate);
             movies.add(movie);
         }
 
@@ -138,6 +144,44 @@ public final class TMDBUtils {
     public static URL buildMostPopularMoviesUrl() {
         Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
                 .appendPath(PATH_POPULAR)
+                .appendQueryParameter("api_key", API_KEY)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.v(TAG, "Built URI " + url);
+
+        return url;
+    }
+
+    public static URL buildMovieTrailersUrl(int movieId) {
+        Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
+                .appendPath(Integer.toString(movieId))
+                .appendPath(PATH_TRAILERS)
+                .appendQueryParameter("api_key", API_KEY)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.v(TAG, "Built URI " + url);
+
+        return url;
+    }
+
+    public static URL buildMovieReviewsUrl(int movieId) {
+        Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
+                .appendPath(Integer.toString(movieId))
+                .appendPath(PATH_REVIEWS)
                 .appendQueryParameter("api_key", API_KEY)
                 .build();
 
