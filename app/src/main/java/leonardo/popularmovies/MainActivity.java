@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.On
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public static final int TAB_COUNT = 2;
+        public static final int TAB_COUNT = 3;
         public static final int COLUMN_COUNT = 2;
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -134,13 +134,15 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.On
                     return MoviesFragment.newInstance(COLUMN_COUNT, MoviesFragment.MOVIES_TOP_RATED);
                 case 1:
                     return MoviesFragment.newInstance(COLUMN_COUNT, MoviesFragment.MOVIES_MOST_POPULAR);
+                case 2:
+                    return MoviesFragment.newInstance(COLUMN_COUNT, MoviesFragment.MOVIES_FAVORITES);
             }
             return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override
         public int getCount() {
-            // Show 2 total pages.
+            // Show number of total pages.
             return TAB_COUNT;
         }
 
@@ -151,6 +153,8 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.On
                     return "Top Rated";
                 case 1:
                     return "Most Popular";
+                case 2:
+                    return "Favorites";
             }
             return null;
         }

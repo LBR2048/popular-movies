@@ -31,6 +31,8 @@ public class MoviesFragment extends Fragment {
 
     public static final int MOVIES_TOP_RATED = 0;
     public static final int MOVIES_MOST_POPULAR = 1;
+    public static final int MOVIES_FAVORITES = 2;
+
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String ARG_MOVIES_SELECTION = "movies-selection";
