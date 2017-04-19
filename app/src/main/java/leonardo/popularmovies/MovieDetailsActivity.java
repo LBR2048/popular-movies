@@ -1,8 +1,8 @@
 package leonardo.popularmovies;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import org.parceler.Parcels;
 
@@ -31,8 +31,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    public void onMovieDetailsFavoritePressed(boolean favorite) {
+        Toast.makeText(this, "Favorite", Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -15,6 +15,7 @@ public class Movie {
     String overview;
     String rating;
     String releaseDate;
+    boolean favorite;
 
     public Movie() {
         // Required for Parcelable
@@ -46,6 +47,14 @@ public class Movie {
 
     public String getReleaseDate() {
         return releaseDate;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 
     @Override

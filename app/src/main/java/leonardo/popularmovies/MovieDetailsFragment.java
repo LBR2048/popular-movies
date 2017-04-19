@@ -1,12 +1,14 @@
 package leonardo.popularmovies;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -61,6 +63,7 @@ public class MovieDetailsFragment extends Fragment {
         if (getArguments() != null) {
             movie = Parcels.unwrap(getArguments().getParcelable(ARG_PARAM1));
         }
+        setHasOptionsMenu(true  );
     }
 
     @Override
@@ -94,10 +97,26 @@ public class MovieDetailsFragment extends Fragment {
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_movie_details, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_favorite:
+                onFavoritePressed(true);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onFavoritePressed(boolean favorite) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onMovieDetailsFavoritePressed(favorite);
         }
     }
 
@@ -130,6 +149,6 @@ public class MovieDetailsFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onMovieDetailsFavoritePressed(boolean favorite);
     }
 }
