@@ -23,11 +23,20 @@ public class Movie {
     }
 
     public Movie(int id, String title, String poster, String overview, String rating, String releaseDate) {
+        this.id = id;
         this.title = title;
         this.poster = poster;
         this.overview = overview;
         this.rating = rating;
         this.releaseDate = releaseDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
