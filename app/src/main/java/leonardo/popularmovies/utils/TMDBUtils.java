@@ -144,7 +144,7 @@ public final class TMDBUtils {
     public static URL buildMostPopularMoviesUrl() {
         Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
                 .appendPath(PATH_POPULAR)
-                .appendQueryParameter("api_key", API_KEY)
+                .appendQueryParameter(QUERY_PARAMETER_API_KEY, API_KEY)
                 .build();
 
         URL url = null;
@@ -163,7 +163,7 @@ public final class TMDBUtils {
         Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
                 .appendPath(Integer.toString(movieId))
                 .appendPath(PATH_TRAILERS)
-                .appendQueryParameter("api_key", API_KEY)
+                .appendQueryParameter(QUERY_PARAMETER_API_KEY, API_KEY)
                 .build();
 
         URL url = null;
@@ -182,7 +182,7 @@ public final class TMDBUtils {
         Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
                 .appendPath(Integer.toString(movieId))
                 .appendPath(PATH_REVIEWS)
-                .appendQueryParameter("api_key", API_KEY)
+                .appendQueryParameter(QUERY_PARAMETER_API_KEY, API_KEY)
                 .build();
 
         URL url = null;
