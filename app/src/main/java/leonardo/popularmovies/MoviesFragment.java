@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import leonardo.popularmovies.model.Movie;
 import leonardo.popularmovies.utils.NetworkUtils;
 import leonardo.popularmovies.utils.TMDBUtils;
 

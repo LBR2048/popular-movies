@@ -1,4 +1,4 @@
-package leonardo.popularmovies;
+package leonardo.popularmovies.model;
 
 import org.parceler.Parcel;
 

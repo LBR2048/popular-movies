@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import org.parceler.Parcels;
 
+import leonardo.popularmovies.model.Movie;
 import leonardo.popularmovies.model.Video;
 import leonardo.popularmovies.utils.YouTubeUtils;
 

@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leonardo.popularmovies.BuildConfig;
-import leonardo.popularmovies.Movie;
+import leonardo.popularmovies.model.Movie;
 import leonardo.popularmovies.model.Video;
 
 /**

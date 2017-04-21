@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import leonardo.popularmovies.MoviesFragment.OnMoviesFragmentInteractionListener;
+import leonardo.popularmovies.model.Movie;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Movie} and makes a call to the

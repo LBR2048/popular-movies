@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import org.parceler.Parcels;
 
+import leonardo.popularmovies.model.Movie;
+
 public class MainActivity extends AppCompatActivity implements MoviesFragment.OnMoviesFragmentInteractionListener {
 
     /**
