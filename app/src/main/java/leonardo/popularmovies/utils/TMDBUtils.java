@@ -30,6 +30,7 @@ import java.util.List;
 
 import leonardo.popularmovies.BuildConfig;
 import leonardo.popularmovies.Movie;
+import leonardo.popularmovies.model.Video;
 
 /**
  * Utility functions to handle OpenWeatherMap JSON data.
@@ -43,7 +44,7 @@ public final class TMDBUtils {
     private static final String PATH_POPULAR = "popular";
     private static final String PATH_TOP_RATED = "top_rated";
     private static final String PATH_TRAILERS = "videos";
-    private static final String PATH_REVIEWS = "eviews";
+    private static final String PATH_REVIEWS = "reviews";
 
     private static final String QUERY_PARAMETER_API_KEY = "api_key";
 
@@ -121,6 +122,62 @@ public final class TMDBUtils {
         }
 
         return movies;
+    }
+
+    public static List<Video> getVideosFromJsonString(Context context, String forecastJsonStr)
+            throws JSONException {
+
+        final String TDB_RESULTS = "results";
+
+        JSONObject forecastJson = new JSONObject(forecastJsonStr);
+
+        List<Video> videos = new ArrayList<>();
+
+        /* Is there an error? */
+//        if (forecastJson.has(OWM_MESSAGE_CODE)) {
+//            int errorCode = forecastJson.getInt(OWM_MESSAGE_CODE);
+//
+//            switch (errorCode) {
+//                case HttpURLConnection.HTTP_OK:
+//                    break;
+//                case HttpURLConnection.HTTP_NOT_FOUND:
+//                    /* Location invalid */
+//                    return null;
+//                default:
+//                    /* Server probably down */
+//                    return null;
+//            }
+//        }
+
+        JSONArray videosArray = forecastJson.getJSONArray(TDB_RESULTS);
+
+        for (int i = 0; i < videosArray.length(); i++) {
+
+            /* These are the values that will be collected */
+            final int id;
+            final String name;
+            final String title;
+            final String poster;
+            final String overview;
+            final String rating;
+            final String releaseDate;
+
+            /* Get the JSON object representing the movie */
+            JSONObject movieData = videosArray.getJSONObject(i);
+
+//            id = movieData.getInt(ID);
+            name = movieData.getString("name");
+//            title = movieData.getString(ORIGINAL_TITLE);
+//            poster = BASE_POSTER_PATH + movieData.getString(POSTER_PATH);
+//            overview = movieData.getString(OVERVIEW);
+//            rating = movieData.getString(VOTE_AVERAGE);
+//            releaseDate = movieData.getString(RELEASE_DATE);
+
+            Video video = new Video(name);
+            videos.add(video);
+        }
+
+        return videos;
     }
 
     public static URL buildTopRatedMoviesUrl() {

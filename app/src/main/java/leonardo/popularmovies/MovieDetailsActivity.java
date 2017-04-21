@@ -6,8 +6,11 @@ import android.widget.Toast;
 
 import org.parceler.Parcels;
 
+import leonardo.popularmovies.model.Video;
+
 public class MovieDetailsActivity extends AppCompatActivity implements
-        MovieDetailsFragment.OnFragmentInteractionListener{
+        MovieDetailsFragment.OnMovieDetailsFragmentInteractionListener,
+        MovieDetailsFragment.OnVideoInteractionListener{
 
     public static final String MOVIE_DETAILS_FRAGMENT_TAG = "MovieDetailsFragmentTag";
 
@@ -35,4 +38,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         Toast.makeText(this, "Favorite", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onVideoClicked(Video video) {
+        Toast.makeText(this, video.getName(), Toast.LENGTH_SHORT).show();
+    }
 }

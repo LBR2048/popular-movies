@@ -1,10 +1,13 @@
 package leonardo.popularmovies;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,11 +21,19 @@ import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import leonardo.popularmovies.model.Video;
+import leonardo.popularmovies.utils.NetworkUtils;
+import leonardo.popularmovies.utils.TMDBUtils;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MovieDetailsFragment.OnFragmentInteractionListener} interface
+ * {@link OnMovieDetailsFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link MovieDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -35,7 +46,10 @@ public class MovieDetailsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private Movie movie;
 
-    private OnFragmentInteractionListener mListener;
+    private OnMovieDetailsFragmentInteractionListener mListener;
+    private OnVideoInteractionListener mVideoListener;
+    private VideosAdapter mVideosAdapter;
+    private RecyclerView mVideosRecyclerView;
 
     public MovieDetailsFragment() {
         // Required empty public constructor
@@ -81,6 +95,7 @@ public class MovieDetailsFragment extends Fragment {
         TextView overviewView = (TextView) getActivity().findViewById(R.id.tv_movie_details_overview);
         TextView ratingView = (TextView) getActivity().findViewById(R.id.tv_movie_details_rating);
         TextView releaseDateView = (TextView) getActivity().findViewById(R.id.tv_movie_details_release_date);
+        mVideosRecyclerView = (RecyclerView) getActivity().findViewById(R.id.rv_movie_videos);
 
         // Set activity title
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(movie.getTitle());
@@ -95,6 +110,21 @@ public class MovieDetailsFragment extends Fragment {
         ratingView.setText(movie.getRating());
         releaseDateView.setText(movie.getReleaseDate());
 
+        // Set videos adapter
+        mVideosAdapter = new VideosAdapter(new ArrayList<Video>(), mVideoListener);
+        mVideosRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mVideosRecyclerView.setAdapter(mVideosAdapter);
+
+        loadReviews();
+        loadVideos();
+    }
+
+    private void loadReviews() {
+        new FetchReviewsTask().execute();
+    }
+
+    private void loadVideos() {
+        new FetchVideosTask().execute();
     }
 
     @Override
@@ -123,8 +153,9 @@ public class MovieDetailsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnMovieDetailsFragmentInteractionListener) {
+            mListener = (OnMovieDetailsFragmentInteractionListener) context;
+            mVideoListener = (OnVideoInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -147,8 +178,90 @@ public class MovieDetailsFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+    public interface OnMovieDetailsFragmentInteractionListener {
         void onMovieDetailsFavoritePressed(boolean favorite);
+    }
+
+    public interface OnVideoInteractionListener {
+        void onVideoClicked(Video video);
+    }
+
+    private class FetchVideosTask extends AsyncTask<Void, Void, List<Video>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            mLoadingIndicator.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+//        protected List<Movie> doInBackground(Void... voids) {
+        protected List<Video> doInBackground(Void... voids) {
+            URL videosRequestUrl = TMDBUtils.buildMovieTrailersUrl(movie.getId());
+
+            try {
+                String jsonVideosResponse = NetworkUtils
+                        .getResponseFromHttpUrl(videosRequestUrl);
+
+                List<Video> videos = TMDBUtils
+                        .getVideosFromJsonString(getActivity().getApplicationContext(), jsonVideosResponse);
+
+                return videos;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<Video> videos) {
+//            mLoadingIndicator.setVisibility(View.INVISIBLE);
+            if (videos != null) {
+                mVideosAdapter.setVideosData(videos);
+            } else {
+//                showErrorMessage();
+            }
+        }
+    }
+
+    private class FetchReviewsTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            mLoadingIndicator.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+//        protected List<Movie> doInBackground(Void... voids) {
+          protected String doInBackground(Void... voids) {
+            URL reviewsRequestUrl = TMDBUtils.buildMovieReviewsUrl(movie.getId());
+
+            try {
+                String jsonReviewsResponse = NetworkUtils
+                        .getResponseFromHttpUrl(reviewsRequestUrl);
+
+//                List<Movie> movies = TMDBUtils
+//                        .getMoviesFromJsonString(getActivity().getApplicationContext(), jsonMovieReviewsResponse);
+
+//                return movies;
+                return jsonReviewsResponse;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String movies) {
+//            mLoadingIndicator.setVisibility(View.INVISIBLE);
+            if (movies != null) {
+//                mMoviesAdapter.setVideosData(movies);
+                TextView reviews = (TextView) getActivity().findViewById(R.id.tv_movie_reviews);
+                reviews.setText(movies);
+            } else {
+//                showErrorMessage();
+            }
+        }
     }
 }

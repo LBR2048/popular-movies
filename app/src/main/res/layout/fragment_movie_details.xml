@@ -37,10 +37,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="Rating: " />
+                android:paddingTop="8dp"
+                android:text="Rating: "
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
             <TextView
                 android:id="@+id/tv_movie_details_rating"
@@ -56,10 +56,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="Released on: " />
+                android:paddingTop="8dp"
+                android:text="Released on: "
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
             <TextView
                 android:id="@+id/tv_movie_details_release_date"
@@ -70,6 +70,32 @@
                 android:paddingTop="8dp"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 tools:text="Release date" />
+
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Videos"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_movie_videos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Videos" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reviews"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:id="@+id/tv_movie_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Reviews" />
+
     </LinearLayout>
 </ScrollView>
