@@ -7,6 +7,7 @@ import android.widget.Toast;
 import org.parceler.Parcels;
 
 import leonardo.popularmovies.model.Video;
+import leonardo.popularmovies.utils.YouTubeUtils;
 
 public class MovieDetailsActivity extends AppCompatActivity implements
         MovieDetailsFragment.OnMovieDetailsFragmentInteractionListener,
@@ -40,6 +41,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     @Override
     public void onVideoClicked(Video video) {
-        Toast.makeText(this, video.getName(), Toast.LENGTH_SHORT).show();
+        // Open video on YouTube app or You Tube page on browser
+        String key = video.getKey();
+        // TODO Hello fellow Udacity reviewer! Please look inside the method below
+        YouTubeUtils.showVideoOnYouTube(this, key);
     }
 }

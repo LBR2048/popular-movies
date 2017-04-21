@@ -56,6 +56,10 @@ public final class TMDBUtils {
     private static final String RELEASE_DATE = "release_date";
     private static final String BASE_POSTER_PATH = "http://image.tmdb.org/t/p/w500";
 
+    private static final String KEY = "key";
+    private static final String NAME = "name";
+
+
     /**
      * This method parses JSON from a web response and returns an array of Strings
      * describing the weather over various days from the forecast.
@@ -154,7 +158,7 @@ public final class TMDBUtils {
         for (int i = 0; i < videosArray.length(); i++) {
 
             /* These are the values that will be collected */
-            final int id;
+            final String key;
             final String name;
             final String title;
             final String poster;
@@ -165,15 +169,15 @@ public final class TMDBUtils {
             /* Get the JSON object representing the movie */
             JSONObject movieData = videosArray.getJSONObject(i);
 
-//            id = movieData.getInt(ID);
-            name = movieData.getString("name");
+            key = movieData.getString(KEY);
+            name = movieData.getString(NAME);
 //            title = movieData.getString(ORIGINAL_TITLE);
 //            poster = BASE_POSTER_PATH + movieData.getString(POSTER_PATH);
 //            overview = movieData.getString(OVERVIEW);
 //            rating = movieData.getString(VOTE_AVERAGE);
 //            releaseDate = movieData.getString(RELEASE_DATE);
 
-            Video video = new Video(name);
+            Video video = new Video(key, name);
             videos.add(video);
         }
 
@@ -253,4 +257,5 @@ public final class TMDBUtils {
 
         return url;
     }
+
 }
