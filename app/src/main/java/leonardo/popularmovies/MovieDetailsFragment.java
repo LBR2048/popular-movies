@@ -110,9 +110,14 @@ public class MovieDetailsFragment extends Fragment {
         ratingView.setText(movie.getRating());
         releaseDateView.setText(movie.getReleaseDate());
 
-        // Set videos adapter
+        // Setup video RecyclerView
         mVideosAdapter = new VideosAdapter(new ArrayList<Video>(), mVideoListener);
-        mVideosRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mVideosRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
         mVideosRecyclerView.setAdapter(mVideosAdapter);
 
         loadReviews();
