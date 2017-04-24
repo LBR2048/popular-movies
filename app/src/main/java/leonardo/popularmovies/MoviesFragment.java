@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import leonardo.popularmovies.data.MoviesUtils;
 import leonardo.popularmovies.model.Movie;
 import leonardo.popularmovies.utils.NetworkUtils;
 import leonardo.popularmovies.utils.TMDBUtils;
@@ -146,7 +147,12 @@ public class MoviesFragment extends Fragment {
     }
 
     public void loadMovies() {
-        new FetchMoviesTask().execute();
+        if (mMoviesSelection != MOVIES_FAVORITES) {
+            new FetchMoviesTask().execute();
+        } else {
+            mMoviesAdapter.setMoviesData(MoviesUtils.loadFavoriteMovies(getContext()));
+            mMoviesAdapter.notifyDataSetChanged();
+        }
     }
 
     private class FetchMoviesTask extends AsyncTask<Void, Void, List<Movie>> {

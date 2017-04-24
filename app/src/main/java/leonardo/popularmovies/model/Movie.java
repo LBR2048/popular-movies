@@ -79,4 +79,30 @@ public class Movie {
 
         return movies;
     }
+//
+//    public static List<Movie> favoriteMovies = new ArrayList<>();
+//
+//    public static List<Movie> getFavoriteMovies() {
+//        return favoriteMovies;
+//    }
+//
+//    public static void setFavoriteMovies(List<Movie> favoriteMovies) {
+//        Movie.favoriteMovies = favoriteMovies;
+//    }
+//
+//    public static void addFavoriteMovie(Movie movie) {
+//        if (!checkIfMovieIsFavorite(movie)) {
+//            favoriteMovies.add(movie);
+//        }
+//    }
+//
+//    public static void removeFavoriteMovie(Movie movie) {
+//        if (checkIfMovieIsFavorite(movie)) {
+//            favoriteMovies.remove(movie);
+//        }
+//    }
+//
+//    public static boolean checkIfMovieIsFavorite(Movie movie) {
+//        return favoriteMovies.contains(movie);
+//    }
 }

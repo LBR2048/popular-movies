@@ -2,7 +2,6 @@ package leonardo.popularmovies;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import org.parceler.Parcels;
 
@@ -11,7 +10,7 @@ import leonardo.popularmovies.model.Video;
 import leonardo.popularmovies.utils.YouTubeUtils;
 
 public class MovieDetailsActivity extends AppCompatActivity implements
-        MovieDetailsFragment.OnMovieDetailsFragmentInteractionListener,
+        MovieDetailsFragment.OnFavoriteInteractionListener,
         MovieDetailsFragment.OnVideoInteractionListener{
 
     public static final String MOVIE_DETAILS_FRAGMENT_TAG = "MovieDetailsFragmentTag";
@@ -36,8 +35,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onMovieDetailsFavoritePressed(boolean favorite) {
-        Toast.makeText(this, "Favorite", Toast.LENGTH_SHORT).show();
+    public void onFavoritePressed(Movie movie) {
     }
 
     @Override

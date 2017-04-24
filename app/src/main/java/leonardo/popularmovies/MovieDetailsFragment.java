@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import leonardo.popularmovies.data.MoviesUtils;
 import leonardo.popularmovies.model.Movie;
 import leonardo.popularmovies.model.Video;
 import leonardo.popularmovies.utils.NetworkUtils;
@@ -34,7 +35,7 @@ import leonardo.popularmovies.utils.TMDBUtils;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnMovieDetailsFragmentInteractionListener} interface
+ * {@link OnFavoriteInteractionListener} interface
  * to handle interaction events.
  * Use the {@link MovieDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -45,9 +46,9 @@ public class MovieDetailsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
 
     // TODO: Rename and change types of parameters
-    private Movie movie;
+    private Movie mMovie;
 
-    private OnMovieDetailsFragmentInteractionListener mListener;
+    private OnFavoriteInteractionListener mFavoriteListener;
     private OnVideoInteractionListener mVideoListener;
     private VideosAdapter mVideosAdapter;
     private RecyclerView mVideosRecyclerView;
@@ -76,7 +77,7 @@ public class MovieDetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            movie = Parcels.unwrap(getArguments().getParcelable(ARG_PARAM1));
+            mMovie = Parcels.unwrap(getArguments().getParcelable(ARG_PARAM1));
         }
         setHasOptionsMenu(true  );
     }
@@ -99,17 +100,17 @@ public class MovieDetailsFragment extends Fragment {
         mVideosRecyclerView = (RecyclerView) getActivity().findViewById(R.id.rv_movie_videos);
 
         // Set activity title
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(movie.getTitle());
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mMovie.getTitle());
 
-        String posterPath = movie.getPoster();
+        String posterPath = mMovie.getPoster();
         Picasso.with(getContext())
                 .load(posterPath)
                 .placeholder(getContext().getResources().getDrawable(R.drawable.ic_movie_cyan_600_24dp))
                 .into(posterView);
 
-        overviewView.setText(movie.getOverview());
-        ratingView.setText(movie.getRating());
-        releaseDateView.setText(movie.getReleaseDate());
+        overviewView.setText(mMovie.getOverview());
+        ratingView.setText(mMovie.getRating());
+        releaseDateView.setText(mMovie.getReleaseDate());
 
         // Setup video RecyclerView
         mVideosAdapter = new VideosAdapter(new ArrayList<Video>(), mVideoListener);
@@ -136,31 +137,59 @@ public class MovieDetailsFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_movie_details, menu);
+        if (MoviesUtils.checkIfMovieIsFavorite(getContext(), mMovie)) {
+            showMovieAsFavorite(menu);
+        } else {
+            showMovieAsNotFavorite(menu);
+        }
+    }
+
+    private void showMovieAsFavorite(Menu menu) {
+        showMovieAsFavorite(menu.getItem(0));
+    }
+
+    private void showMovieAsNotFavorite(Menu menu) {
+        showMovieAsNotFavorite(menu.getItem(0));
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_favorite:
-                onFavoritePressed(true);
+                onFavoriteClicked(item);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onFavoritePressed(boolean favorite) {
-        if (mListener != null) {
-            mListener.onMovieDetailsFavoritePressed(favorite);
+    public void showMovieAsFavorite(MenuItem item) {
+        item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_white_18dp));
+    }
+
+    public void showMovieAsNotFavorite(MenuItem item) {
+        item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_border_white_18dp));
+    }
+
+    public void onFavoriteClicked(MenuItem menuItem) {
+        if (MoviesUtils.checkIfMovieIsFavorite(getContext(), mMovie)) {
+            MoviesUtils.deleteFavoriteMovie(getContext(), mMovie);
+            showMovieAsNotFavorite(menuItem);
+        } else {
+            MoviesUtils.addFavoriteMovie(getContext(), mMovie);
+            showMovieAsFavorite(menuItem);
+        }
+
+        if (mFavoriteListener != null) {
+            mFavoriteListener.onFavoritePressed(mMovie);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnMovieDetailsFragmentInteractionListener) {
-            mListener = (OnMovieDetailsFragmentInteractionListener) context;
+        if (context instanceof OnFavoriteInteractionListener) {
+            mFavoriteListener = (OnFavoriteInteractionListener) context;
             mVideoListener = (OnVideoInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
@@ -171,7 +200,7 @@ public class MovieDetailsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mFavoriteListener = null;
     }
 
     /**
@@ -184,8 +213,8 @@ public class MovieDetailsFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnMovieDetailsFragmentInteractionListener {
-        void onMovieDetailsFavoritePressed(boolean favorite);
+    public interface OnFavoriteInteractionListener {
+        void onFavoritePressed(Movie movie);
     }
 
     public interface OnVideoInteractionListener {
@@ -203,7 +232,7 @@ public class MovieDetailsFragment extends Fragment {
         @Override
 //        protected List<Movie> doInBackground(Void... voids) {
         protected List<Video> doInBackground(Void... voids) {
-            URL videosRequestUrl = TMDBUtils.buildMovieTrailersUrl(movie.getId());
+            URL videosRequestUrl = TMDBUtils.buildMovieTrailersUrl(mMovie.getId());
 
             try {
                 String jsonVideosResponse = NetworkUtils
@@ -240,8 +269,8 @@ public class MovieDetailsFragment extends Fragment {
 
         @Override
 //        protected List<Movie> doInBackground(Void... voids) {
-          protected String doInBackground(Void... voids) {
-            URL reviewsRequestUrl = TMDBUtils.buildMovieReviewsUrl(movie.getId());
+        protected String doInBackground(Void... voids) {
+            URL reviewsRequestUrl = TMDBUtils.buildMovieReviewsUrl(mMovie.getId());
 
             try {
                 String jsonReviewsResponse = NetworkUtils
