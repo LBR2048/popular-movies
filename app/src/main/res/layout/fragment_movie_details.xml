@@ -91,11 +91,11 @@
             android:text="Reviews"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-        <TextView
-            android:id="@+id/tv_movie_reviews"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_movie_reviews"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Reviews" />
+            tools:text="Videos" />
 
     </LinearLayout>
 </ScrollView>

@@ -27,6 +27,7 @@ import java.util.List;
 
 import leonardo.popularmovies.data.MoviesUtils;
 import leonardo.popularmovies.model.Movie;
+import leonardo.popularmovies.model.Review;
 import leonardo.popularmovies.model.Video;
 import leonardo.popularmovies.utils.NetworkUtils;
 import leonardo.popularmovies.utils.TMDBUtils;
@@ -52,6 +53,9 @@ public class MovieDetailsFragment extends Fragment {
     private OnVideoInteractionListener mVideoListener;
     private VideosAdapter mVideosAdapter;
     private RecyclerView mVideosRecyclerView;
+
+    private ReviewsAdapter mReviewsAdapter;
+    private RecyclerView mReviewsRecyclerView;
 
     public MovieDetailsFragment() {
         // Required empty public constructor
@@ -98,6 +102,7 @@ public class MovieDetailsFragment extends Fragment {
         TextView ratingView = (TextView) getActivity().findViewById(R.id.tv_movie_details_rating);
         TextView releaseDateView = (TextView) getActivity().findViewById(R.id.tv_movie_details_release_date);
         mVideosRecyclerView = (RecyclerView) getActivity().findViewById(R.id.rv_movie_videos);
+        mReviewsRecyclerView = (RecyclerView) getActivity().findViewById(R.id.rv_movie_reviews);
 
         // Set activity title
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mMovie.getTitle());
@@ -112,7 +117,7 @@ public class MovieDetailsFragment extends Fragment {
         ratingView.setText(mMovie.getRating());
         releaseDateView.setText(mMovie.getReleaseDate());
 
-        // Setup video RecyclerView
+        // Setup videos RecyclerView
         mVideosAdapter = new VideosAdapter(new ArrayList<Video>(), mVideoListener);
         mVideosRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()) {
             @Override
@@ -122,8 +127,18 @@ public class MovieDetailsFragment extends Fragment {
         });
         mVideosRecyclerView.setAdapter(mVideosAdapter);
 
-        loadReviews();
+        // Setup reviews RecyclerView
+        mReviewsAdapter = new ReviewsAdapter(new ArrayList<Review>(), null);
+        mReviewsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        mReviewsRecyclerView.setAdapter(mReviewsAdapter);
+
         loadVideos();
+        loadReviews();
     }
 
     private void loadReviews() {
@@ -259,7 +274,7 @@ public class MovieDetailsFragment extends Fragment {
         }
     }
 
-    private class FetchReviewsTask extends AsyncTask<Void, Void, String> {
+    private class FetchReviewsTask extends AsyncTask<Void, Void, List<Review>> {
 
         @Override
         protected void onPreExecute() {
@@ -269,18 +284,17 @@ public class MovieDetailsFragment extends Fragment {
 
         @Override
 //        protected List<Movie> doInBackground(Void... voids) {
-        protected String doInBackground(Void... voids) {
+        protected List<Review> doInBackground(Void... voids) {
             URL reviewsRequestUrl = TMDBUtils.buildMovieReviewsUrl(mMovie.getId());
 
             try {
                 String jsonReviewsResponse = NetworkUtils
                         .getResponseFromHttpUrl(reviewsRequestUrl);
 
-//                List<Movie> movies = TMDBUtils
-//                        .getMoviesFromJsonString(getActivity().getApplicationContext(), jsonMovieReviewsResponse);
+                List<Review> reviews = TMDBUtils
+                        .getReviewsFromJsonString(getActivity().getApplicationContext(), jsonReviewsResponse);
 
-//                return movies;
-                return jsonReviewsResponse;
+                return reviews;
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -288,12 +302,10 @@ public class MovieDetailsFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(String movies) {
+        protected void onPostExecute(List<Review> reviews) {
 //            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (movies != null) {
-//                mMoviesAdapter.setVideosData(movies);
-                TextView reviews = (TextView) getActivity().findViewById(R.id.tv_movie_reviews);
-                reviews.setText(movies);
+            if (reviews != null) {
+                mReviewsAdapter.setReviewsData(reviews);
             } else {
 //                showErrorMessage();
             }

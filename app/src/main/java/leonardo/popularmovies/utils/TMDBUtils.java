@@ -30,6 +30,7 @@ import java.util.List;
 
 import leonardo.popularmovies.BuildConfig;
 import leonardo.popularmovies.model.Movie;
+import leonardo.popularmovies.model.Review;
 import leonardo.popularmovies.model.Video;
 
 /**
@@ -58,6 +59,7 @@ public final class TMDBUtils {
 
     private static final String KEY = "key";
     private static final String NAME = "name";
+    public static final String CONTENT = "content";
 
 
     /**
@@ -182,6 +184,56 @@ public final class TMDBUtils {
         }
 
         return videos;
+    }
+
+    public static List<Review> getReviewsFromJsonString(Context context, String forecastJsonStr)
+            throws JSONException {
+
+        final String TDB_RESULTS = "results";
+
+        JSONObject forecastJson = new JSONObject(forecastJsonStr);
+
+        List<Review> reviews = new ArrayList<>();
+
+        /* Is there an error? */
+//        if (forecastJson.has(OWM_MESSAGE_CODE)) {
+//            int errorCode = forecastJson.getInt(OWM_MESSAGE_CODE);
+//
+//            switch (errorCode) {
+//                case HttpURLConnection.HTTP_OK:
+//                    break;
+//                case HttpURLConnection.HTTP_NOT_FOUND:
+//                    /* Location invalid */
+//                    return null;
+//                default:
+//                    /* Server probably down */
+//                    return null;
+//            }
+//        }
+
+        JSONArray videosArray = forecastJson.getJSONArray(TDB_RESULTS);
+
+        for (int i = 0; i < videosArray.length(); i++) {
+
+            /* These are the values that will be collected */
+            final String key;
+            final String content;
+
+            /* Get the JSON object representing the movie */
+            JSONObject reviewData = videosArray.getJSONObject(i);
+
+            content = reviewData.getString(CONTENT);
+//            title = movieData.getString(ORIGINAL_TITLE);
+//            poster = BASE_POSTER_PATH + movieData.getString(POSTER_PATH);
+//            overview = movieData.getString(OVERVIEW);
+//            rating = movieData.getString(VOTE_AVERAGE);
+//            releaseDate = movieData.getString(RELEASE_DATE);
+
+            Review video = new Review(content);
+            reviews.add(video);
+        }
+
+        return reviews;
     }
 
     public static URL buildTopRatedMoviesUrl() {
