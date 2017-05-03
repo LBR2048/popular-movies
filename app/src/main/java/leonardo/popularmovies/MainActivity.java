@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.On
         tabLayout.setupWithViewPager(mViewPager);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -121,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.On
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public static final int TAB_COUNT = 3;
-        public static final int COLUMN_COUNT = 2;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -133,11 +131,11 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.On
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    return MoviesFragment.newInstance(COLUMN_COUNT, MoviesFragment.MOVIES_TOP_RATED);
+                    return MoviesFragment.newInstance(MoviesFragment.MOVIES_TOP_RATED);
                 case 1:
-                    return MoviesFragment.newInstance(COLUMN_COUNT, MoviesFragment.MOVIES_MOST_POPULAR);
+                    return MoviesFragment.newInstance(MoviesFragment.MOVIES_MOST_POPULAR);
                 case 2:
-                    return MoviesFragment.newInstance(COLUMN_COUNT, MoviesFragment.MOVIES_FAVORITES);
+                    return MoviesFragment.newInstance(MoviesFragment.MOVIES_FAVORITES);
             }
             return PlaceholderFragment.newInstance(position + 1);
         }

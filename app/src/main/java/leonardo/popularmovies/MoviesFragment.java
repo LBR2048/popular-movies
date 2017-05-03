@@ -1,13 +1,13 @@
 package leonardo.popularmovies;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,8 +35,9 @@ public class MoviesFragment extends Fragment {
     public static final int MOVIES_MOST_POPULAR = 1;
     public static final int MOVIES_FAVORITES = 2;
 
+    public static final int COLUMN_COUNT_PORTRAIT = 2;
+    public static final int COLUMN_COUNT_LANDSCAPE = 3;
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String ARG_MOVIES_SELECTION = "movies-selection";
 
     private int mColumnCount;
@@ -55,10 +56,9 @@ public class MoviesFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static MoviesFragment newInstance(int columnCount, int moviesSelection) {
+    public static MoviesFragment newInstance(int moviesSelection) {
         MoviesFragment fragment = new MoviesFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
         args.putInt(ARG_MOVIES_SELECTION, moviesSelection);
         fragment.setArguments(args);
         return fragment;
@@ -69,7 +69,6 @@ public class MoviesFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             mMoviesSelection = getArguments().getInt(ARG_MOVIES_SELECTION);
         }
     }
@@ -84,11 +83,15 @@ public class MoviesFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+
+            // Set number of columns showing movie posters depending on device orientation
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+                mColumnCount = COLUMN_COUNT_PORTRAIT;
             }
+            else{
+                mColumnCount = COLUMN_COUNT_LANDSCAPE;
+            }
+            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
 
             // Set activity title
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.app_name);
