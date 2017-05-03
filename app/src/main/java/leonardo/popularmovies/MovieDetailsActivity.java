@@ -35,7 +35,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onFavoritePressed(Movie movie) {
+    public void onFavoriteClicked(Movie movie) {
     }
 
     @Override

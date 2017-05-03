@@ -40,15 +40,14 @@ public final class TMDBUtils {
 
     private static final String TAG = TMDBUtils.class.getSimpleName();
 
+    // TMDB constants
     private static final String TMDB_BASE_URL = "http://api.themoviedb.org/3/movie/";
     private static final String API_KEY = BuildConfig.THE_MOVIE_DB_API_TOKEN;
-    private static final String PATH_POPULAR = "popular";
-    private static final String PATH_TOP_RATED = "top_rated";
-    private static final String PATH_TRAILERS = "videos";
-    private static final String PATH_REVIEWS = "reviews";
-
     private static final String QUERY_PARAMETER_API_KEY = "api_key";
 
+    // Movies constants
+    private static final String PATH_POPULAR = "popular";
+    private static final String PATH_TOP_RATED = "top_rated";
     private static final String ID = "id";
     private static final String ORIGINAL_TITLE = "original_title";
     private static final String POSTER_PATH = "poster_path";
@@ -57,31 +56,28 @@ public final class TMDBUtils {
     private static final String RELEASE_DATE = "release_date";
     private static final String BASE_POSTER_PATH = "http://image.tmdb.org/t/p/w500";
 
+    // Videos constants
+    private static final String PATH_VIDEOS = "videos";
     private static final String KEY = "key";
     private static final String NAME = "name";
-    public static final String CONTENT = "content";
+
+    // Review constants
+    private static final String PATH_REVIEWS = "reviews";
+    private static final String CONTENT = "content";
 
 
     /**
-     * This method parses JSON from a web response and returns an array of Strings
-     * describing the weather over various days from the forecast.
-     * <p/>
-     * Later on, we'll be parsing the JSON into structured data within the
-     * getFullWeatherDataFromJson function, leveraging the data we have stored in the JSON. For
-     * now, we just convert the JSON into human-readable strings.
-     *
-     * @param forecastJsonStr JSON response from server
-     *
-     * @return Array of Strings describing weather data
-     *
+     * This method parses JSON from a web response and returns an array of Movie objects
+     * @param moviesJsonString JSON response from server
+     * @return Array of Movie objects
      * @throws JSONException If JSON data cannot be properly parsed
      */
-    public static List<Movie> getMoviesFromJsonString(Context context, String forecastJsonStr)
+    public static List<Movie> getMoviesFromJsonString(Context context, String moviesJsonString)
             throws JSONException {
 
         final String TDB_RESULTS = "results";
 
-        JSONObject forecastJson = new JSONObject(forecastJsonStr);
+        JSONObject forecastJson = new JSONObject(moviesJsonString);
 
         List<Movie> movies = new ArrayList<>();
 
@@ -130,12 +126,19 @@ public final class TMDBUtils {
         return movies;
     }
 
-    public static List<Video> getVideosFromJsonString(Context context, String forecastJsonStr)
+    /**
+     * This method parses JSON from a web response and returns an array of Video objects
+     * @param context
+     * @param videosJsonString JSON response from server
+     * @return Array of Video objects
+     * @throws JSONException If JSON data cannot be properly parsed
+     */
+    public static List<Video> getVideosFromJsonString(Context context, String videosJsonString)
             throws JSONException {
 
         final String TDB_RESULTS = "results";
 
-        JSONObject forecastJson = new JSONObject(forecastJsonStr);
+        JSONObject forecastJson = new JSONObject(videosJsonString);
 
         List<Video> videos = new ArrayList<>();
 
@@ -162,22 +165,12 @@ public final class TMDBUtils {
             /* These are the values that will be collected */
             final String key;
             final String name;
-            final String title;
-            final String poster;
-            final String overview;
-            final String rating;
-            final String releaseDate;
 
             /* Get the JSON object representing the movie */
             JSONObject movieData = videosArray.getJSONObject(i);
 
             key = movieData.getString(KEY);
             name = movieData.getString(NAME);
-//            title = movieData.getString(ORIGINAL_TITLE);
-//            poster = BASE_POSTER_PATH + movieData.getString(POSTER_PATH);
-//            overview = movieData.getString(OVERVIEW);
-//            rating = movieData.getString(VOTE_AVERAGE);
-//            releaseDate = movieData.getString(RELEASE_DATE);
 
             Video video = new Video(key, name);
             videos.add(video);
@@ -186,12 +179,19 @@ public final class TMDBUtils {
         return videos;
     }
 
-    public static List<Review> getReviewsFromJsonString(Context context, String forecastJsonStr)
+    /**
+     * This method parses JSON from a web response and returns an array of Review objects
+     * @param context
+     * @param reviewsJsonString JSON response from server
+     * @return Array of Review objects
+     * @throws JSONException If JSON data cannot be properly parsed
+     */
+    public static List<Review> getReviewsFromJsonString(Context context, String reviewsJsonString)
             throws JSONException {
 
         final String TDB_RESULTS = "results";
 
-        JSONObject forecastJson = new JSONObject(forecastJsonStr);
+        JSONObject forecastJson = new JSONObject(reviewsJsonString);
 
         List<Review> reviews = new ArrayList<>();
 
@@ -216,18 +216,12 @@ public final class TMDBUtils {
         for (int i = 0; i < videosArray.length(); i++) {
 
             /* These are the values that will be collected */
-            final String key;
             final String content;
 
-            /* Get the JSON object representing the movie */
+            /* Get the JSON object representing the review */
             JSONObject reviewData = videosArray.getJSONObject(i);
 
             content = reviewData.getString(CONTENT);
-//            title = movieData.getString(ORIGINAL_TITLE);
-//            poster = BASE_POSTER_PATH + movieData.getString(POSTER_PATH);
-//            overview = movieData.getString(OVERVIEW);
-//            rating = movieData.getString(VOTE_AVERAGE);
-//            releaseDate = movieData.getString(RELEASE_DATE);
 
             Review video = new Review(content);
             reviews.add(video);
@@ -272,10 +266,10 @@ public final class TMDBUtils {
         return url;
     }
 
-    public static URL buildMovieTrailersUrl(int movieId) {
+    public static URL buildMovieVideosUrl(int movieId) {
         Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon()
                 .appendPath(Integer.toString(movieId))
-                .appendPath(PATH_TRAILERS)
+                .appendPath(PATH_VIDEOS)
                 .appendQueryParameter(QUERY_PARAMETER_API_KEY, API_KEY)
                 .build();
 

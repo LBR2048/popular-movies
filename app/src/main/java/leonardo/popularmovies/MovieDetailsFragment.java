@@ -196,7 +196,7 @@ public class MovieDetailsFragment extends Fragment {
         }
 
         if (mFavoriteListener != null) {
-            mFavoriteListener.onFavoritePressed(mMovie);
+            mFavoriteListener.onFavoriteClicked(mMovie);
         }
     }
 
@@ -229,7 +229,7 @@ public class MovieDetailsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFavoriteInteractionListener {
-        void onFavoritePressed(Movie movie);
+        void onFavoriteClicked(Movie movie);
     }
 
     public interface OnVideoInteractionListener {
@@ -245,9 +245,8 @@ public class MovieDetailsFragment extends Fragment {
         }
 
         @Override
-//        protected List<Movie> doInBackground(Void... voids) {
         protected List<Video> doInBackground(Void... voids) {
-            URL videosRequestUrl = TMDBUtils.buildMovieTrailersUrl(mMovie.getId());
+            URL videosRequestUrl = TMDBUtils.buildMovieVideosUrl(mMovie.getId());
 
             try {
                 String jsonVideosResponse = NetworkUtils
@@ -283,7 +282,6 @@ public class MovieDetailsFragment extends Fragment {
         }
 
         @Override
-//        protected List<Movie> doInBackground(Void... voids) {
         protected List<Review> doInBackground(Void... voids) {
             URL reviewsRequestUrl = TMDBUtils.buildMovieReviewsUrl(mMovie.getId());
 
