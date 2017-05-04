@@ -140,16 +140,6 @@ public class MoviesFragment extends Fragment {
         mListener = null;
     }
 
-//    @Override
-//    public void setUserVisibleHint(boolean visible){
-//        super.setUserVisibleHint(visible);
-//        if (visible) {
-//            if (mMoviesSelection == MOVIES_FAVORITES) {
-//                loadFavoriteMovies();
-//            }
-//        }
-//    }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
