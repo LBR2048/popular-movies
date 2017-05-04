@@ -111,12 +111,16 @@ public class MoviesFragment extends Fragment {
             // Set adapter
             mMoviesAdapter = new MoviesAdapter(new ArrayList<Movie>(), mListener);
             recyclerView.setAdapter(mMoviesAdapter);
-
-            // Load movies data
-            loadMovies();
-
         }
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Load movies data
+        loadMovies();
     }
 
     @Override
@@ -135,6 +139,16 @@ public class MoviesFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+//    @Override
+//    public void setUserVisibleHint(boolean visible){
+//        super.setUserVisibleHint(visible);
+//        if (visible) {
+//            if (mMoviesSelection == MOVIES_FAVORITES) {
+//                loadFavoriteMovies();
+//            }
+//        }
+//    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -160,10 +174,14 @@ public class MoviesFragment extends Fragment {
                 new FetchMostPopularMoviesTask().execute();
                 break;
             case MOVIES_FAVORITES:
-                mMoviesAdapter.setMoviesData(MoviesUtils.loadFavoriteMovies(getContext()));
-                mMoviesAdapter.notifyDataSetChanged();
+                loadFavoriteMovies();
                 break;
         }
+    }
+
+    public void loadFavoriteMovies() {
+        mMoviesAdapter.setMoviesData(MoviesUtils.loadFavoriteMovies(getContext()));
+        mMoviesAdapter.notifyDataSetChanged();
     }
 
     private class FetchTopRatedMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
