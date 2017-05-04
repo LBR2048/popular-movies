@@ -23,7 +23,7 @@ public final class YouTubeUtils {
 
     // TODO Hello fellow Udacity reviewer! I need your help
     // Turning a URL into a String and then to a Uri seems strange.
-    // What is the best way to do that?
+    // What is the best way to do that? Thanks =)
     private static URL buildYouTubeVideoUrl(String movieId) {
         Uri builtUri = Uri.parse(YOU_TUBE_BASE_URL).buildUpon()
                 .appendPath(PATH_WATCH)

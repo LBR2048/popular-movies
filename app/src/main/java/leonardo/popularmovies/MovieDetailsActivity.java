@@ -42,7 +42,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     public void onVideoClicked(Video video) {
         // Open video on YouTube app or You Tube page on browser
         String key = video.getKey();
-        // TODO Hello fellow Udacity reviewer! Please look inside the method below
         YouTubeUtils.showVideoOnYouTube(this, key);
     }
 }

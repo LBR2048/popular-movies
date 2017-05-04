@@ -117,6 +117,11 @@ public class MoviesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        // TODO Hello Udacity reviewer
+        // I am loading the movies on every fragment resume to keep the favorites list
+        // always in sync with the DB, but it reloads data from the web every time also
+        // I don't think that is very smart, do you have any suggestions? Thanks =)
+
         // Load movies data
         loadMovies();
     }
@@ -173,6 +178,7 @@ public class MoviesFragment extends Fragment {
     // I could have made MoviesFragment implement that interface,
     // but then the onResult callbacks from
     // FetchTopRatedMoviesTask and FetchMostPopularMoviesTask would get mixed up
+    // Thanks =)
     public void loadTopRatedMovies() {
         new FetchTopRatedMoviesTask(new FetchMoviesAsyncTaskListener() {
             @Override
