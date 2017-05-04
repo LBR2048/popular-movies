@@ -31,6 +31,8 @@ import leonardo.popularmovies.utils.TMDBUtils;
  */
 public class MoviesFragment extends Fragment {
 
+    String TAG = ((Object) this).getClass().getSimpleName();
+
     public static final int MOVIES_TOP_RATED = 0;
     public static final int MOVIES_MOST_POPULAR = 1;
     public static final int MOVIES_FAVORITES = 2;
@@ -150,15 +152,21 @@ public class MoviesFragment extends Fragment {
     }
 
     public void loadMovies() {
-        if (mMoviesSelection != MOVIES_FAVORITES) {
-            new FetchMoviesTask().execute();
-        } else {
-            mMoviesAdapter.setMoviesData(MoviesUtils.loadFavoriteMovies(getContext()));
-            mMoviesAdapter.notifyDataSetChanged();
+        switch (mMoviesSelection) {
+            case MOVIES_TOP_RATED:
+                new FetchTopRatedMoviesTask().execute();
+                break;
+            case MOVIES_MOST_POPULAR:
+                new FetchMostPopularMoviesTask().execute();
+                break;
+            case MOVIES_FAVORITES:
+                mMoviesAdapter.setMoviesData(MoviesUtils.loadFavoriteMovies(getContext()));
+                mMoviesAdapter.notifyDataSetChanged();
+                break;
         }
     }
 
-    private class FetchMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
+    private class FetchTopRatedMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
 
         @Override
         protected void onPreExecute() {
@@ -168,12 +176,7 @@ public class MoviesFragment extends Fragment {
 
         @Override
         protected List<Movie> doInBackground(Void... voids) {
-            URL moviesRequestUrl;
-            if (mMoviesSelection == MOVIES_TOP_RATED) {
-                moviesRequestUrl = TMDBUtils.buildTopRatedMoviesUrl();
-            } else {
-                moviesRequestUrl = TMDBUtils.buildMostPopularMoviesUrl();
-            }
+            URL moviesRequestUrl = TMDBUtils.buildTopRatedMoviesUrl();
 
             try {
                 String jsonMoviesResponse = NetworkUtils
@@ -203,4 +206,43 @@ public class MoviesFragment extends Fragment {
         }
     }
 
+    private class FetchMostPopularMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            mLoadingIndicator.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected List<Movie> doInBackground(Void... voids) {
+            URL moviesRequestUrl = TMDBUtils.buildMostPopularMoviesUrl();
+
+            try {
+                String jsonMoviesResponse = NetworkUtils
+                        .getResponseFromHttpUrl(moviesRequestUrl);
+
+                List<Movie> movies = TMDBUtils
+                        .getMoviesFromJsonString(getActivity().getApplicationContext(), jsonMoviesResponse);
+
+                return movies;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<Movie> movies) {
+//            mLoadingIndicator.setVisibility(View.INVISIBLE);
+            if (movies != null) {
+                mMoviesAdapter.setMoviesData(movies);
+//                showWeatherDataView();
+//                mForecastAdapter.setWeatherData(weatherData);
+            } else {
+//                showErrorMessage();
+            }
+        }
+    }
 }
