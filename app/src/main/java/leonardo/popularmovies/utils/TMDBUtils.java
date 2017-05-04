@@ -72,7 +72,7 @@ public final class TMDBUtils {
      * @return Array of Movie objects
      * @throws JSONException If JSON data cannot be properly parsed
      */
-    public static List<Movie> getMoviesFromJsonString(Context context, String moviesJsonString)
+    public static List<Movie> getMoviesFromJsonString(String moviesJsonString)
             throws JSONException {
 
         final String TDB_RESULTS = "results";
@@ -128,12 +128,11 @@ public final class TMDBUtils {
 
     /**
      * This method parses JSON from a web response and returns an array of Video objects
-     * @param context
      * @param videosJsonString JSON response from server
      * @return Array of Video objects
      * @throws JSONException If JSON data cannot be properly parsed
      */
-    public static List<Video> getVideosFromJsonString(Context context, String videosJsonString)
+    public static List<Video> getVideosFromJsonString(String videosJsonString)
             throws JSONException {
 
         final String TDB_RESULTS = "results";
@@ -181,12 +180,11 @@ public final class TMDBUtils {
 
     /**
      * This method parses JSON from a web response and returns an array of Review objects
-     * @param context
      * @param reviewsJsonString JSON response from server
      * @return Array of Review objects
      * @throws JSONException If JSON data cannot be properly parsed
      */
-    public static List<Review> getReviewsFromJsonString(Context context, String reviewsJsonString)
+    public static List<Review> getReviewsFromJsonString(String reviewsJsonString)
             throws JSONException {
 
         final String TDB_RESULTS = "results";

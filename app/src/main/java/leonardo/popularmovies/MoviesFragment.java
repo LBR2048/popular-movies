@@ -2,7 +2,6 @@ package leonardo.popularmovies;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -14,14 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import leonardo.popularmovies.asynctasks.FetchMostPopularMoviesTask;
+import leonardo.popularmovies.asynctasks.FetchMoviesAsyncTaskListener;
+import leonardo.popularmovies.asynctasks.FetchTopRatedMoviesTask;
 import leonardo.popularmovies.data.MoviesUtils;
 import leonardo.popularmovies.model.Movie;
-import leonardo.popularmovies.utils.NetworkUtils;
-import leonardo.popularmovies.utils.TMDBUtils;
 
 /**
  * A fragment representing a list of Items.
@@ -169,12 +168,29 @@ public class MoviesFragment extends Fragment {
         }
     }
 
+    // TODO Hello Udacity reviewer!
+    // Could you suggest good material about Java callbacks, especially this type I have implemented?
+    // I am still not confident about using them
+    // Instead of creating a new FetchMoviesAsyncTaskListener,
+    // I could have made MoviesFragment implement that interface,
+    // but then the onResult callbacks from
+    // FetchTopRatedMoviesTask and FetchMostPopularMoviesTask would get mixed up
     public void loadTopRatedMovies() {
-        new FetchTopRatedMoviesTask().execute();
+        new FetchTopRatedMoviesTask(new FetchMoviesAsyncTaskListener() {
+            @Override
+            public void onResult(List<Movie> movies) {
+                mMoviesAdapter.setMoviesData(movies);
+            }
+        }).execute();
     }
 
     public void loadMostPopularMovies() {
-        new FetchMostPopularMoviesTask().execute();
+        new FetchMostPopularMoviesTask(new FetchMoviesAsyncTaskListener() {
+            @Override
+            public void onResult(List<Movie> movies) {
+                mMoviesAdapter.setMoviesData(movies);
+            }
+        }).execute();
     }
 
     public void loadFavoriteMovies() {
@@ -182,83 +198,4 @@ public class MoviesFragment extends Fragment {
         mMoviesAdapter.notifyDataSetChanged();
     }
 
-    private class FetchTopRatedMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected List<Movie> doInBackground(Void... voids) {
-            URL moviesRequestUrl = TMDBUtils.buildTopRatedMoviesUrl();
-
-            try {
-                String jsonMoviesResponse = NetworkUtils
-                        .getResponseFromHttpUrl(moviesRequestUrl);
-
-                List<Movie> movies = TMDBUtils
-                        .getMoviesFromJsonString(getActivity().getApplicationContext(), jsonMoviesResponse);
-
-                return movies;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<Movie> movies) {
-//            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (movies != null) {
-                mMoviesAdapter.setMoviesData(movies);
-//                showWeatherDataView();
-//                mForecastAdapter.setWeatherData(weatherData);
-            } else {
-//                showErrorMessage();
-            }
-        }
-    }
-
-    private class FetchMostPopularMoviesTask extends AsyncTask<Void, Void, List<Movie>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected List<Movie> doInBackground(Void... voids) {
-            URL moviesRequestUrl = TMDBUtils.buildMostPopularMoviesUrl();
-
-            try {
-                String jsonMoviesResponse = NetworkUtils
-                        .getResponseFromHttpUrl(moviesRequestUrl);
-
-                List<Movie> movies = TMDBUtils
-                        .getMoviesFromJsonString(getActivity().getApplicationContext(), jsonMoviesResponse);
-
-                return movies;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<Movie> movies) {
-//            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (movies != null) {
-                mMoviesAdapter.setMoviesData(movies);
-//                showWeatherDataView();
-//                mForecastAdapter.setWeatherData(weatherData);
-            } else {
-//                showErrorMessage();
-            }
-        }
-    }
 }

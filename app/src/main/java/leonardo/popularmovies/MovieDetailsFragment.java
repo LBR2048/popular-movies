@@ -1,7 +1,6 @@
 package leonardo.popularmovies;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,16 +20,17 @@ import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import leonardo.popularmovies.asynctasks.FetchReviewsTask;
+import leonardo.popularmovies.asynctasks.FetchVideosAsyncTaskListener;
+import leonardo.popularmovies.asynctasks.FetchVideosTask;
 import leonardo.popularmovies.data.MoviesUtils;
 import leonardo.popularmovies.model.Movie;
 import leonardo.popularmovies.model.Review;
 import leonardo.popularmovies.model.Video;
-import leonardo.popularmovies.utils.NetworkUtils;
-import leonardo.popularmovies.utils.TMDBUtils;
+import leonardo.popularmovies.utils.FetchReviewsAsyncTaskListener;
 
 
 /**
@@ -142,11 +142,21 @@ public class MovieDetailsFragment extends Fragment {
     }
 
     private void loadReviews() {
-        new FetchReviewsTask().execute();
+        new FetchReviewsTask(new FetchReviewsAsyncTaskListener() {
+            @Override
+            public void onResult(List<Review> reviews) {
+                mReviewsAdapter.setReviewsData(reviews);
+            }
+        }).execute(mMovie);
     }
 
     private void loadVideos() {
-        new FetchVideosTask().execute();
+        new FetchVideosTask(new FetchVideosAsyncTaskListener() {
+            @Override
+            public void onResult(List<Video> videos) {
+                mVideosAdapter.setVideosData(videos);
+            }
+        }).execute(mMovie);
     }
 
     @Override
@@ -236,77 +246,4 @@ public class MovieDetailsFragment extends Fragment {
         void onVideoClicked(Video video);
     }
 
-    private class FetchVideosTask extends AsyncTask<Void, Void, List<Video>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected List<Video> doInBackground(Void... voids) {
-            URL videosRequestUrl = TMDBUtils.buildMovieVideosUrl(mMovie.getId());
-
-            try {
-                String jsonVideosResponse = NetworkUtils
-                        .getResponseFromHttpUrl(videosRequestUrl);
-
-                List<Video> videos = TMDBUtils
-                        .getVideosFromJsonString(getActivity().getApplicationContext(), jsonVideosResponse);
-
-                return videos;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<Video> videos) {
-//            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (videos != null) {
-                mVideosAdapter.setVideosData(videos);
-            } else {
-//                showErrorMessage();
-            }
-        }
-    }
-
-    private class FetchReviewsTask extends AsyncTask<Void, Void, List<Review>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected List<Review> doInBackground(Void... voids) {
-            URL reviewsRequestUrl = TMDBUtils.buildMovieReviewsUrl(mMovie.getId());
-
-            try {
-                String jsonReviewsResponse = NetworkUtils
-                        .getResponseFromHttpUrl(reviewsRequestUrl);
-
-                List<Review> reviews = TMDBUtils
-                        .getReviewsFromJsonString(getActivity().getApplicationContext(), jsonReviewsResponse);
-
-                return reviews;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<Review> reviews) {
-//            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (reviews != null) {
-                mReviewsAdapter.setReviewsData(reviews);
-            } else {
-//                showErrorMessage();
-            }
-        }
-    }
 }
