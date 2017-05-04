@@ -158,15 +158,23 @@ public class MoviesFragment extends Fragment {
     public void loadMovies() {
         switch (mMoviesSelection) {
             case MOVIES_TOP_RATED:
-                new FetchTopRatedMoviesTask().execute();
+                loadTopRatedMovies();
                 break;
             case MOVIES_MOST_POPULAR:
-                new FetchMostPopularMoviesTask().execute();
+                loadMostPopularMovies();
                 break;
             case MOVIES_FAVORITES:
                 loadFavoriteMovies();
                 break;
         }
+    }
+
+    public void loadTopRatedMovies() {
+        new FetchTopRatedMoviesTask().execute();
+    }
+
+    public void loadMostPopularMovies() {
+        new FetchMostPopularMoviesTask().execute();
     }
 
     public void loadFavoriteMovies() {
