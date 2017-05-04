@@ -55,7 +55,6 @@ public class MoviesFragment extends Fragment {
     public MoviesFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static MoviesFragment newInstance(int moviesSelection) {
         MoviesFragment fragment = new MoviesFragment();
@@ -150,7 +149,6 @@ public class MoviesFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnMoviesFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onMovieClicked(Movie item);
     }
 

@@ -46,7 +46,6 @@ public class MovieDetailsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
-    // TODO: Rename and change types of parameters
     private Movie mMovie;
 
     private OnFavoriteInteractionListener mFavoriteListener;
@@ -68,7 +67,6 @@ public class MovieDetailsFragment extends Fragment {
      * @param movie Parameter 1.
      * @return A new instance of fragment MovieDetailsFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static MovieDetailsFragment newInstance(Movie movie) {
         MovieDetailsFragment fragment = new MovieDetailsFragment();
         Bundle args = new Bundle();

@@ -18,7 +18,6 @@ import leonardo.popularmovies.model.Movie;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Movie} and makes a call to the
  * specified {@link OnMoviesFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
 
